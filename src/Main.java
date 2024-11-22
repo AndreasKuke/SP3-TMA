@@ -6,33 +6,25 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Scanner scanner = new Scanner(System.in);
         User user = new User();
 
-        System.out.println("Welcome to 'Netflix & Chill', what is your next move?");
-        System.out.println("1. Log into an account");
-        System.out.println("2. Create an user");
+        while(true){
+            TextUI.messagePrint("Welcome to Netflix & Chill");
+            TextUI.messagePrint("1. Login to your account");
+            TextUI.messagePrint("2. Create new account");
 
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+            String choice = TextUI.messagePrompt("Enter your choice:");
 
-        if(choice == 2){
-            System.out.println("Enter preferred Username");
-            String name = scanner.nextLine();
-
-            System.out.println("Enter preferred Password");
-            String password = scanner.nextLine();
-
-            user.createUser(name, password);
-        }else if (choice == 1){
-            System.out.println("Enter Username");
-            String name = scanner.nextLine();
-
-            System.out.println("Enter Password");
-            String password = scanner.nextLine();
-        }else{
-            System.out.println("Invalid choice, try again");
+            switch (choice){
+                case "1":
+                    user.loginUser();
+                    break;
+                case "2":
+                    user.createUser();
+                    break;
+                default:
+                    TextUI.messagePrint("Invalid choice, read what it says.");
+            }
         }
-        scanner.close();
     }
 }
