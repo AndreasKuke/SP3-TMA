@@ -33,6 +33,10 @@ class MediaList{
 - ArrayList
 + addMedia()
 + removeMedia()
++ watchList()
++ movieList()
++ seriesList()
++ finishedList()
 
 
 }
@@ -80,13 +84,11 @@ Media <|-- Series
 StreamingService *-- Media
 
 
-MediaList <|-- WatchList
-MediaList <|-- MovieList
-MediaList <|-- SeriesList
-MediaList <|-- FinishedList
+
 
 Main *-- StreamingService
-
+StreamingService *-- User
+StreamingService *-- MediaList
 
 StreamingService *-- TextUI
 StreamingService *-- FileIO
