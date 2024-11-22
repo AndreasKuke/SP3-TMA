@@ -1,0 +1,68 @@
+
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma layout smetana
+
+object StreamingService
+object Media
+object Movie
+object Series
+object Categories
+object Crime
+object War
+object Drama
+object Family
+object Romance
+object SciFi
+object Seasons
+object Episodes
+object ReleaseYear
+object Rating
+object User
+object MovieList
+object WatchList
+object FinishedMedia
+object Login
+object CreateUser
+object MainMenu
+object SearchBar
+object Genres
+object SeriesList
+object List
+
+StreamingService *-- MainMenu
+User *-- CreateUser
+User *-- Login
+CreateUser *-- Login
+StreamingService *-- Login
+MainMenu *-- SearchBar
+
+
+
+Crime --|> Genres
+War --|> Genres
+Drama --|> Genres
+Family --|> Genres
+Romance --|> Genres
+SciFi --|> Genres
+Media *-- Genres
+Movie --|> Media
+Series --|> Media
+MovieList *-- Media
+SeriesList *-- Media
+Series *-- Seasons
+Seasons *-- Episodes
+Media *-- Rating
+SearchBar *-- Media
+Media *-- List
+
+Media *-- ReleaseYear
+MainMenu *-- List
+WatchList --|> List
+SeriesList --|> List
+MovieList --|> List
+FinishedMedia --|> List
+
+
+
+@enduml

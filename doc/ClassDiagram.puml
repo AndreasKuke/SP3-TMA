@@ -1,0 +1,91 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma layout smetana
+
+class User{
+- String username
+- String password
++ void createUser()
++ void loginUser()
+}
+
+class Main{
+
++ static void main(String[] args)
+}
+
+class StreamingService{
+
++ void searchbar()
+- TextUI ui
+- FileIO io
++ void displayMain()
++ void displayGenre(String genre)
++ void displayList()
++ void displayMedia()
+
+
+
+}
+
+class MediaList{
+
+- ArrayList
++ addMedia()
++ removeMedia()
+
+
+}
+
+package "util" {
+
+class FileIO{
++ void readUserData()
++ void saveData()
+
+}
+class TextUI{
+- Scanner scanner
++ void displayMsg()
++ int promptNumeric()
++ String promptText()
++ boolean promptBinary(String msg)
+
+}
+}
+
+class Media{
+
+- int releaseYear
+- float rating
+- String name
+- String genre
+
+
+
+}
+
+class Series{
+
+- seasons
+- episodes
+
+}
+
+
+Movie --|> Media
+Series --|> Media
+StreamingService *-- Media
+
+
+WatchList --|> MediaList
+MovieList --|> MediaList
+SeriesList --|> MediaList
+FinishedList --|> MediaList
+
+Main *-- StreamingService
+
+
+StreamingService *-- TextUI
+StreamingService *-- FileIO
+@enduml
