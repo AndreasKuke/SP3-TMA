@@ -73,15 +73,17 @@ class Series{
 }
 
 
-Movie --|> Media
-Series --|> Media
+
+Media <|-- Movie
+Media <|-- Series
+
 StreamingService *-- Media
 
 
-WatchList --|> MediaList
-MovieList --|> MediaList
-SeriesList --|> MediaList
-FinishedList --|> MediaList
+MediaList <|-- WatchList
+MediaList <|-- MovieList
+MediaList <|-- SeriesList
+MediaList <|-- FinishedList
 
 Main *-- StreamingService
 
