@@ -1,5 +1,7 @@
+import org.w3c.dom.Text;
+
+import java.nio.channels.SelectableChannel;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MediaList {
     private ArrayList<String> movieList;
@@ -88,38 +90,40 @@ public class MediaList {
         }
     }
 
-    public void displayMediaList(String type){
+    public void displayMediaList(String type) {
         ArrayList<String> mediaList = new ArrayList<>();
 
-        if(type.equals("Movies")){
+        if (type.equals("Movies")) {
             mediaList = movieList;
-        }else if(type.equals("Series")){
+        } else if (type.equals("Series")) {
             mediaList = seriesList;
-        }else{
+        } else {
             TextUI.messagePrint("Invalid media type");
             return;
         }
 
-
-
-        TextUI.messagePrint("\n"+type+" List:");
-        for (int i = 0; i < mediaList.size(); i++){
-            TextUI.messagePrint((i+1) + ". " +mediaList.get(i)); //Laver liste af media fra 1 til n-1
-        }
-        String choice = TextUI.messagePrompt("Enter number of desired media or click '0' to go back.");
-
-        try{
-            int intChoice = Integer.parseInt(choice);
-            if(intChoice == 0){
-                return;
+        boolean inSubMenu = true;
+        while (inSubMenu) {
+            TextUI.messagePrint("\n" + type + " List:");
+            for (int i = 0; i < mediaList.size(); i++) {
+                TextUI.messagePrint((i + 1) + ". " + mediaList.get(i)); //Laver liste af media fra 1 til n-1
             }
-            if (intChoice > 0 && intChoice <= mediaList.size()){
-                TextUI.messagePrint("You have selected: " + mediaList.get(intChoice));
-            }else{
-                TextUI.messagePrint("Invalid choice");
+            String choice = TextUI.messagePrompt("Enter number of desired media or click '0' to go back.");
+
+            try {
+                int intChoice = Integer.parseInt(choice);
+                if (intChoice == 0) {
+                    inSubMenu = false;
+                }
+                if (intChoice > 0 && intChoice <= mediaList.size()) {
+                    String selectedMedia = mediaList.get(intChoice - 1);
+                    handleMediaSelection(selectedMedia, type);
+                } else {
+                    TextUI.messagePrint("Invalid choice");
+                }
+            } catch (NumberFormatException e) {
+                throw new RuntimeException(e);
             }
-        } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -131,4 +135,36 @@ public class MediaList {
     public ArrayList<String> getSeriesList() {
         return seriesList;
     }
+
+        private void handleMediaSelection(String selectedMedia, String type){
+            boolean inMediaMenu = true;
+            while (inMediaMenu){
+                TextUI.messagePrint("\nYou have selected: \"" + selectedMedia + "\".");
+                TextUI.messagePrint("1. Start watching \"" + selectedMedia + "\".");
+                TextUI.messagePrint("2. Add \"" + selectedMedia + "\"" + " to your watchlist.");
+                TextUI.messagePrint("3. Go back to the " + type + " list.");
+                TextUI.messagePrint("4. Go back to the main menu.");
+
+                String choice = TextUI.messagePrompt("Enter your choice:");
+
+                switch (choice){
+                    case "1":
+                        TextUI.messagePrint("Starting \"" + selectedMedia + "\"...");
+                        System.exit(0);
+                        break;
+                    case "2":
+                        addToWatchList(selectedMedia);
+                        TextUI.messagePrint("Added \"" + selectedMedia + "\"" + " to your watchlist.");
+                        break;
+                    case "3":
+                        displayMediaList(type);
+                        break;
+                    case "4":
+                        inMediaMenu = false;
+                        break;
+                    default:
+                        TextUI.messagePrint("Invalid choice. Please try again.");
+                }
+            }
+        }
 }
