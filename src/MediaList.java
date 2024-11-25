@@ -88,4 +88,47 @@ public class MediaList {
         }
     }
 
+    public void displayMediaList(String type){
+        ArrayList<String> mediaList = new ArrayList<>();
+
+        if(type.equals("Movies")){
+            mediaList = movieList;
+        }else if(type.equals("Series")){
+            mediaList = seriesList;
+        }else{
+            TextUI.messagePrint("Invalid media type");
+            return;
+        }
+
+
+
+        TextUI.messagePrint("\n"+type+" List:");
+        for (int i = 0; i < mediaList.size(); i++){
+            TextUI.messagePrint((i+1) + ". " +mediaList.get(i)); //Laver liste af media fra 1 til n-1
+        }
+        String choice = TextUI.messagePrompt("Enter number of desired media or click '0' to go back.");
+
+        try{
+            int intChoice = Integer.parseInt(choice);
+            if(intChoice == 0){
+                return;
+            }
+            if (intChoice > 0 && intChoice <= mediaList.size()){
+                TextUI.messagePrint("You have selected: " + mediaList.get(intChoice));
+            }else{
+                TextUI.messagePrint("Invalid choice");
+            }
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public ArrayList<String> getMovieList() {
+        return movieList;
+    }
+
+    public ArrayList<String> getSeriesList() {
+        return seriesList;
+    }
 }
