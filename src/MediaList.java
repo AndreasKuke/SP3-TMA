@@ -86,8 +86,15 @@ public class MediaList {
     }
 
 
-    public void addToFinishedList() {
-
+    public void addToFinishedList(String title) {
+        boolean mediaFound = false;
+        for (String movie : movieList) {
+            if (movie.contains(title) && !finishedList.contains(movie)) {
+                finishedList.add(movie);
+                mediaFound = true;
+                break;
+            }
+        }
     }
 
 
@@ -170,7 +177,8 @@ public class MediaList {
                 switch (choice){
                     case "1":
                         TextUI.messagePrint("Starting \"" + selectedMedia + "\"...");
-                        System.exit(0);
+                        addToFinishedList(selectedMedia);
+                        System.exit(0); // filler code
                         break;
                     case "2":
                         addToWatchList(selectedMedia);
