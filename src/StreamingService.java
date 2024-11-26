@@ -3,11 +3,14 @@ import java.io.IOException;
 public class StreamingService {
     private User currentUser;
     private MediaList mediaList;
+    private String filePathMovies;
+    private String filePathSeries;
     private String userDataPath;
 
 
     public StreamingService(String filePathMovies, String filePathSeries) {
-        mediaList = new MediaList(filePathMovies, filePathSeries);
+        this.filePathMovies = filePathMovies;
+        this.filePathSeries = filePathSeries;
         currentUser = new User();
 
     }
@@ -27,6 +30,7 @@ public class StreamingService {
             switch (choice) {
                 case "1":
                     if (currentUser.loginUser()) {
+                        mediaList = new MediaList(filePathMovies, filePathSeries, currentUser);
                         boolean ifLogged = true;
                         while (ifLogged) {
                             TextUI.messagePrint("\nMain menu:");
@@ -61,6 +65,7 @@ public class StreamingService {
                                     break;
                                 case "6":
                                     TextUI.messagePrint("Logging out");
+                                    mediaList.saveLists();
                                     ifLogged = false;
                                     break;
 

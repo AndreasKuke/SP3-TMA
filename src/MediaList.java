@@ -11,15 +11,23 @@ public class MediaList {
     private ArrayList<String> finishedList;
     private ArrayList<String> movieInfoList;
     private ArrayList<String> seriesInfoList;
+    private String watchListPath;
+    private String finishedListPath;
 
 
-    public MediaList(String filePathMovies, String filePathSeries) {
+    public MediaList(String filePathMovies, String filePathSeries, User user) {
         movieList = new ArrayList<>();
         seriesList = new ArrayList<>();
         watchList = new ArrayList<>();
         finishedList = new ArrayList<>();
         loadMovies(filePathMovies);
         loadSeries(filePathSeries);
+
+        this.watchListPath = user.getWatchListPath();
+        this.finishedListPath = user.getFinishedMediaPath();
+
+        loadWatchList();
+        loadFinishedList();
 
         movieInfoList = FileIO.readUserInfo(filePathMovies);
         seriesInfoList = FileIO.readUserInfo(filePathSeries);
@@ -33,9 +41,6 @@ public class MediaList {
             String movieGenre = s.split(";")[2].trim();
             String movieRating = s.split(";")[3].trim();
             movieList.add(movieName);
-
-
-
         }
     }
 
@@ -64,7 +69,6 @@ public class MediaList {
             for (String series : seriesList){
                 if(series.contains(title) && !watchList.contains(series)){
                     watchList.add(series);
-                    TextUI.messagePrint(title + " has been added to your watchlist");
                     mediaFound = true;
                     break;
                 }
@@ -79,7 +83,7 @@ public class MediaList {
         for (String media : watchList) {
             if (media.contains(title)) {
                 watchList.remove(media);
-                TextUI.messagePrint(title + "Has been removed from your watchList" + title);
+                TextUI.messagePrint(title + "Has been removed from your watchList");
             }
         }
         TextUI.messagePrint("Title not found in your watchList");
@@ -97,6 +101,26 @@ public class MediaList {
         }
     }
 
+    private void loadWatchList() {
+        watchList = FileIO.readUserInfo(watchListPath);
+    }
+
+    private void loadFinishedList() {
+        finishedList = FileIO.readUserInfo(finishedListPath);
+    }
+
+    public void saveWatchList() {
+        FileIO.writeUserInfo(watchListPath, String.join("\n", watchList));
+    }
+
+    public void saveFinishedList() {
+        FileIO.writeUserInfo(finishedListPath, String.join("\n", finishedList));
+    }
+
+    public void saveLists() {
+        saveWatchList();
+        saveFinishedList();
+    }
 
     public void displayWatchList() {
         TextUI.messagePrint("Your watchList:");
@@ -153,6 +177,7 @@ public class MediaList {
             }
         }
     }
+
 
 
     public ArrayList<String> getMovieList() {

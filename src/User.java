@@ -34,8 +34,15 @@ public class User {
         }else{
             this.name = name;
             this.password = password;
+            this.watchListPath = "data/" + name + "_watchList.csv";
+            this.finishedMediaPath = "data/" + name + "_finishedMedia.csv";
             FileIO.writeUserInfo(userDataPath,name + "," + password);
             TextUI.messagePrint("User has been created");
+
+            FileIO.writeUserInfo(watchListPath, "");
+            FileIO.writeUserInfo(finishedMediaPath, "");
+
+
         }
     }
 
@@ -48,6 +55,10 @@ public class User {
                 String[] userDetails = line.split(",");
                 if (userDetails[0].equals(name) && userDetails[1].equals(password)) {
                     TextUI.messagePrint("You are now logged in.");
+                    this.name = name;
+                    this.password = password;
+                    this.watchListPath = "data/" + name + "_watchList.csv";
+                    this.finishedMediaPath = "data/" + name + "_finishedMedia.csv";
                     return true;
                 }
             }
@@ -70,4 +81,12 @@ public class User {
         }
         return false;
     }
+    public String getWatchListPath() {
+        return watchListPath;
+    }
+
+    public String getFinishedMediaPath() {
+        return finishedMediaPath;
+    }
 }
+
