@@ -1,16 +1,16 @@
 public class Movie extends Media{
-    private int durationInMinutes;
+    private String durationInMinutes;
 
-    public Movie(String title, String genre, float rating, int releaseYear, int durationInMinutes) {
+    public Movie(String title, String genre, String rating, String releaseYear) {
         super(title, genre, rating, releaseYear);
-        this.durationInMinutes = durationInMinutes;
+        // this.durationInMinutes = durationInMinutes;
     }
 
     // getter and setter
-    public int getDurationInMinutes(){
+    public String getDurationInMinutes(){
         return durationInMinutes;
     }
-    public void setDurationInMinutes(int durationInMinutes){
+    public void setDurationInMinutes(String durationInMinutes){
         this.durationInMinutes = durationInMinutes;
     }
     @Override

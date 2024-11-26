@@ -1,13 +1,13 @@
 public class Series extends Media{
-    private int seasons;
-    private int episodes;
-    public Series(String title, String genre, float rating, int releaseYear, int seasons, int episodes) {
+    private String seasons;
+    private String episodes;
+    public Series(String title, String genre, String rating, String releaseYear, String seasons, String episodes) {
         super(title, genre, rating, releaseYear);
         this.seasons = seasons;
         this.episodes = episodes;
     }
     // getters and setters
-    public int getSeasons(){
+    public String getSeasons(){
         return seasons;
     }
     public void setSeasons(){

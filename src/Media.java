@@ -1,10 +1,10 @@
 public class Media {
-    private int releaseYear;
-    private float rating;
+    private String releaseYear;
+    private String rating;
     private String title;
     private String genre;
 
-    public Media(String title, String genre, float rating, int releaseYear){
+    public Media(String title, String genre, String rating, String releaseYear){
         this.releaseYear = releaseYear;
         this.rating = rating;
         this.title = title;
@@ -13,16 +13,16 @@ public class Media {
     }
 
     // getters and setters
-    public int getReleaseYear(){
+    public String getReleaseYear(){
         return releaseYear;
     }
-    public void setReleaseYear(int releaseYear){
+    public void setReleaseYear(String releaseYear){
         this.releaseYear = releaseYear;
     }
-    public float getRating(){
+    public String getRating(){
         return rating;
     }
-    public void setRating(float rating){
+    public void setRating(String rating){
         this.rating = rating;
     }
     public String getTitle(){
