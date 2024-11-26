@@ -163,36 +163,45 @@ public class MediaList {
         return seriesList;
     }
 
-        private void handleMediaSelection(String selectedMedia, String selectedMediaInfo,String type){
-            boolean inMediaMenu = true;
-            while (inMediaMenu){
-                System.out.println(selectedMediaInfo);
-                TextUI.messagePrint("1. Start watching \"" + selectedMedia + "\".");
-                TextUI.messagePrint("2. Add \"" + selectedMedia + "\"" + " to your watchlist.");
-                TextUI.messagePrint("3. Go back to the " + type + " list.");
-                TextUI.messagePrint("4. Go back to the main menu.");
+    public void handleMediaSelection(String selectedMedia, String selectedMediaInfo,String type){
+        boolean inMediaMenu = true;
+        while (inMediaMenu){
+            System.out.println(selectedMediaInfo);
+            TextUI.messagePrint("1. Start watching \"" + selectedMedia + "\".");
+            TextUI.messagePrint("2. Add \"" + selectedMedia + "\"" + " to your watchlist.");
+            TextUI.messagePrint("3. Go back to the " + type + " list.");
+            TextUI.messagePrint("4. Go back to the main menu.");
 
-                String choice = TextUI.messagePrompt("Enter your choice:");
+            String choice = TextUI.messagePrompt("Enter your choice:");
 
-                switch (choice){
-                    case "1":
-                        TextUI.messagePrint("Starting \"" + selectedMedia + "\"...");
-                        addToFinishedList(selectedMedia);
-                        System.exit(0); // filler code
-                        break;
-                    case "2":
-                        addToWatchList(selectedMedia);
-                        TextUI.messagePrint("Added \"" + selectedMedia + "\"" + " to your watchlist.");
-                        break;
-                    case "3":
-                        displayMediaList(type);
-                        break;
-                    case "4":
-                        inMediaMenu = false;
-                        break;
-                    default:
-                        TextUI.messagePrint("Invalid choice. Please try again.");
-                }
+            switch (choice){
+                case "1":
+                    TextUI.messagePrint("Starting \"" + selectedMedia + "\"...");
+                    addToFinishedList(selectedMedia);
+                    System.exit(0); // filler code
+                    break;
+                case "2":
+                    addToWatchList(selectedMedia);
+                    TextUI.messagePrint("Added \"" + selectedMedia + "\"" + " to your watchlist.");
+                    break;
+                case "3":
+                    displayMediaList(type);
+                    break;
+                case "4":
+                    inMediaMenu = false;
+                    break;
+                default:
+                    TextUI.messagePrint("Invalid choice. Please try again.");
             }
         }
+
+    }
+
+    public ArrayList<String> getSeriesInfoList() {
+        return seriesInfoList;
+    }
+
+    public ArrayList<String> getMovieInfoList() {
+        return movieInfoList;
+    }
 }
