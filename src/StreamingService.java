@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class StreamingService {
     private User currentUser;
@@ -13,8 +14,67 @@ public class StreamingService {
     }
 
     public void searchBar() {
+        String searchPrompt = TextUI.messagePrompt("Enter the title or genre you want to search for:");
 
+        // Search for prompt in movies
+        ArrayList<String> matchedMovies = new ArrayList<>();
+        for (String movie : mediaList.getMovieList()) {
+            if (movie.toLowerCase().contains(searchPrompt.toLowerCase())) {
+                matchedMovies.add(movie);
+            }
+        }
+
+        // Search for prompt in series
+        ArrayList<String> matchedSeries = new ArrayList<>();
+        for (String series : mediaList.getSeriesList()) {
+            if (series.toLowerCase().contains(searchPrompt.toLowerCase())) {
+                matchedSeries.add(series);
+            }
+        }
+
+
+        ArrayList<String> allResults = new ArrayList<>();
+        allResults.addAll(matchedMovies);
+        allResults.addAll(matchedSeries);
+
+        if (allResults.isEmpty()) {
+            TextUI.messagePrint("No results found for \"" + searchPrompt + "\".");
+        } else {
+
+            TextUI.messagePrint("Search results for \"" + searchPrompt + "\":");
+            for (int i = 0; i < allResults.size(); i++) {
+                TextUI.messagePrint((i + 1) + ". " + allResults.get(i));
+            }
+
+            String choice = TextUI.messagePrompt("Enter the number of the media you want to select, or '0' to go back.");
+
+            try {
+                int selectedMediaIndex = Integer.parseInt(choice);
+                if (selectedMediaIndex == 0) {
+                    return;
+                } else if (selectedMediaIndex > 0 && selectedMediaIndex <= allResults.size()) {
+                    String selectedMedia = allResults.get(selectedMediaIndex - 1);
+                    String selectedMediaInfo = "";
+
+
+                    if (matchedMovies.contains(selectedMedia)) {
+                        int movieIndex = matchedMovies.indexOf(selectedMedia);
+                        selectedMediaInfo = mediaList.getMovieInfoList().get(movieIndex);
+                    } else if (matchedSeries.contains(selectedMedia)) {
+                        int seriesIndex = matchedSeries.indexOf(selectedMedia);
+                        selectedMediaInfo = mediaList.getSeriesInfoList().get(seriesIndex);
+                    }
+
+                    mediaList.handleMediaSelection(selectedMedia, selectedMediaInfo, "Movies");
+                } else {
+                    TextUI.messagePrint("Invalid choice.");
+                }
+            } catch (NumberFormatException e) {
+                TextUI.messagePrint("Invalid input.");
+            }
+        }
     }
+
 
     public void displayMain() throws IOException {
         while (true) {
@@ -49,7 +109,7 @@ public class StreamingService {
                                     mediaList.displayMediaList("Series");
                                     break;
                                 case "3":
-                                    TextUI.messagePrint("You can search for a movie or genre");
+                                    searchBar();
                                     break;
                                 case "4":
                                     TextUI.messagePrint("Here is your watchlist");
@@ -70,12 +130,12 @@ public class StreamingService {
                         }
                     }
 
-                        break;
-                        case "2":
-                            currentUser.createUser();
-                            break;
-                        default:
-                            TextUI.messagePrint("Invalid choice, read what it says.");
+                    break;
+                case "2":
+                    currentUser.createUser();
+                    break;
+                default:
+                    TextUI.messagePrint("Invalid choice, read what it says.");
             }
         }
     }
