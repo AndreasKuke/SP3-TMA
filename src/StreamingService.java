@@ -35,7 +35,7 @@ public class StreamingService {
             }
         }
 
-
+        //Combines the movie and series results into one arrayList
         ArrayList<String> allResults = new ArrayList<>();
         allResults.addAll(matchedMovies);
         allResults.addAll(matchedSeries);
@@ -61,14 +61,12 @@ public class StreamingService {
 
 
                     if (matchedMovies.contains(selectedMedia)) {
-                        int movieIndex = matchedMovies.indexOf(selectedMedia);
-                        selectedMediaInfo = mediaList.getMovieInfoList().get(movieIndex);
+                        mediaList.handleMediaSelection(matchedMovies.get(matchedMovies.indexOf(selectedMedia)),
+                                matchedMovies.get(matchedMovies.indexOf(selectedMedia)),"Movies");
                     } else if (matchedSeries.contains(selectedMedia)) {
-                        int seriesIndex = matchedSeries.indexOf(selectedMedia);
-                        selectedMediaInfo = mediaList.getSeriesInfoList().get(seriesIndex);
+                        mediaList.handleMediaSelection(matchedSeries.get(matchedSeries.indexOf(selectedMedia)),
+                                matchedSeries.get(matchedMovies.indexOf(selectedMedia)),"Series");
                     }
-
-                    mediaList.handleMediaSelection(selectedMedia, selectedMediaInfo, "Movies");
                 } else {
                     TextUI.messagePrint("Invalid choice.");
                 }
