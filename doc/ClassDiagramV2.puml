@@ -95,13 +95,16 @@ class Series{
 
 
 
+Media <|-- Movie
 Media <|-- Series
 
 StreamingService *-- Media
 StreamingService --* User
 StreamingService --* MediaList
 
+
 Main *-- StreamingService
+
 
 StreamingService *-- TextUI
 StreamingService *-- FileIO
