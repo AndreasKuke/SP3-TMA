@@ -103,7 +103,6 @@ StreamingService --* MediaList
 
 Main *-- StreamingService
 
-
 StreamingService *-- TextUI
 StreamingService *-- FileIO
 
