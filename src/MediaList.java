@@ -156,6 +156,7 @@ public class MediaList {
 
     private void loadWatchList() {
         watchList = FileIO.readUserInfo(watchListPath);
+        watchList.removeIf(media -> media == null || media.trim().isEmpty());
     }
 
     private void loadFinishedList() {
@@ -164,6 +165,7 @@ public class MediaList {
     }
 
     public void saveWatchList() {
+        watchList.removeIf(String::isEmpty);
         FileIO.writeUserInfo(watchListPath, String.join("\n", watchList));
     }
 
