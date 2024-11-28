@@ -1,0 +1,117 @@
+@startuml
+!pragma layout smetana
+'https://plantuml.com/class-diagram
+
+
+class User{
+- String userDataPath;
+- String watchListPath;
+- String finishedMediaPath;
+
++ void createUser()
++ boolean loginUser()
+- boolean userExists(String name)
+
+}
+
+class Main{
+
++ static void main(String[] args)
+}
+
+class StreamingService{
+
++ void searchbar()
+- User currentUser;
+- MediaList mediaList;
+- String filePathMovies;
+- String filePathSeries;
++ void displayMain()
+
+}
+
+class MediaList{
+
+-ArrayList<String> movieList;
+-ArrayList<String> seriesList;
+-ArrayList<String> watchList;
+-ArrayList<String> finishedList;
+-ArrayList<String> movieInfoList;
+-ArrayList<String> seriesInfoList;
+-String watchListPath;
+-String finishedListPath;
+
++MediaList(String filePathMovies, String filePathSeries, User user)
+- void loadMovies(String filePath)
+- void loadSeries(String filePath)
++ void displayWatchList()
++ void displayFinishedList()
++ void addToWatchList(String title)
++ void addToFinishedList(String title)
+- void loadWatchList()
+- void loadFinishedList()
++ void saveWatchList()
++ void saveFinishedList()
++ void saveLists()
++ void displayMediaList(String type)
++ void handleMediaSelection(String selectedMedia, String selectedMediaInfo,String type)
+- void playMedia(String selectedMedia, String type)
+
+
+}
+
+package "util" {
+
+class FileIO{
++ static ArrayList<String> readUserInfo(String path)
++ static void writeUserInfo(String path, String data)
+
+}
+class TextUI{
+- Scanner scanner
++ static String messagePrompt(String message)
++ static void messagePrint(String message)
+
+}
+}
+
+class Media{
+
+- int releaseYear
+- float rating
+- String name
+- String genre
++ String getMediaInfo()
+
+
+}
+
+class Series{
+
+- seasons
+- episodes
+
+}
+
+
+
+Media <|-- Movie
+Media <|-- Series
+
+StreamingService *-- Media
+StreamingService --* User
+StreamingService --* MediaList
+
+
+MediaList <|-- WatchList
+MediaList <|-- MovieList
+MediaList <|-- SeriesList
+MediaList <|-- FinishedList
+
+Main *-- StreamingService
+
+
+StreamingService *-- TextUI
+StreamingService *-- FileIO
+
+@enduml
