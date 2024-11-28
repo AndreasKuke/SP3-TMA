@@ -1,7 +1,7 @@
 public class Series extends Media{
     private String seasons;
     private String episodes;
-    public Series(String title, String genre, String rating, String releaseYear, String seasons, String episodes) {
+    public Series(String title, String genre, double rating, String releaseYear, String seasons, String episodes) {
         super(title, genre, rating, releaseYear);
         this.seasons = seasons;
         this.episodes = episodes;

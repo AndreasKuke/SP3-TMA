@@ -1,10 +1,10 @@
 public class Media {
     private String releaseYear;
-    private String rating;
+    private double rating;
     private String title;
     private String genre;
 
-    public Media(String title, String genre, String rating, String releaseYear){
+    public Media(String title, String genre, double rating, String releaseYear){
         this.releaseYear = releaseYear;
         this.rating = rating;
         this.title = title;
@@ -19,10 +19,10 @@ public class Media {
     public void setReleaseYear(String releaseYear){
         this.releaseYear = releaseYear;
     }
-    public String getRating(){
+    public double getRating(){
         return rating;
     }
-    public void setRating(String rating){
+    public void setRating(double rating){
         this.rating = rating;
     }
     public String getTitle(){

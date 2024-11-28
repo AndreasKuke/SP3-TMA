@@ -114,7 +114,7 @@ public class StreamingService {
                                     searchBar();
                                     break;
                                 case "4":
-                                    TextUI.messagePrint("Here is your watchlist");
+                                    TextUI.messagePrint("Here is your watchlist:");
                                     mediaList.displayWatchList();
                                     break;
                                 case "5":
