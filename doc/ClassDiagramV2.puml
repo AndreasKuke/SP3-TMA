@@ -95,18 +95,11 @@ class Series{
 
 
 
-Media <|-- Movie
 Media <|-- Series
 
 StreamingService *-- Media
 StreamingService --* User
 StreamingService --* MediaList
-
-
-MediaList <|-- WatchList
-MediaList <|-- MovieList
-MediaList <|-- SeriesList
-MediaList <|-- FinishedList
 
 Main *-- StreamingService
 
