@@ -65,7 +65,7 @@ public class StreamingService {
                                 matchedMovies.get(matchedMovies.indexOf(selectedMedia)),"Movies");
                     } else if (matchedSeries.contains(selectedMedia)) {
                         mediaList.handleMediaSelection(matchedSeries.get(matchedSeries.indexOf(selectedMedia)),
-                                matchedSeries.get(matchedMovies.indexOf(selectedMedia)),"Series");
+                                matchedSeries.get(matchedSeries.indexOf(selectedMedia)),"Series");
                     }
                 } else {
                     TextUI.messagePrint("Invalid choice.");
