@@ -1,7 +1,6 @@
 import org.w3c.dom.Text;
 
-import java.io.File;
-import java.nio.channels.SelectableChannel;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 
 public class MediaList {
@@ -53,6 +52,60 @@ public class MediaList {
         }
     }
 
+    public void displayWatchList() {
+        TextUI.messagePrint("Your watchlist:");
+        for (int i = 0; i < watchList.size(); i++){
+            TextUI.messagePrint((i + 1) + ". " + watchList.get(i));
+        }
+        TextUI.messagePrint("0. Go back to main menu.");
+        String choice = TextUI.messagePrompt("Enter number of media or 0 to go back:");
+
+        try{
+            int selectedMediaIndex = Integer.parseInt(choice);
+            if (selectedMediaIndex == 0) {
+                return; // Go back to the main menu
+            }
+
+            if (selectedMediaIndex > 0 && selectedMediaIndex <= watchList.size()) {
+                String selectedMedia = watchList.get(selectedMediaIndex - 1); // Get selected media
+
+                // Play media directly from the watchlist
+                handleMediaSelection(selectedMedia, "Selected from Watchlist", "Watchlist");
+            } else {
+                TextUI.messagePrint("Invalid choice. Please try again.");
+            }
+        } catch (NumberFormatException e) {
+            TextUI.messagePrint("Invalid input. Please enter a number.");
+        }
+    }
+
+    public void displayFinishedList() {
+        TextUI.messagePrint("Your finished list:");
+        for (int i = 0; i < finishedList.size(); i++) {
+            TextUI.messagePrint((i + 1) + ": " + finishedList.get(i)); // Show all media in finished list
+        }
+        TextUI.messagePrint("0. Go back to main menu.");
+
+        String choice = TextUI.messagePrompt("Enter number of media you want to select or 0 to go back.");
+
+        try {
+            int selectedMediaIndex = Integer.parseInt(choice);
+            if (selectedMediaIndex == 0) {
+                return; // Go back to the main menu
+            }
+
+            if (selectedMediaIndex > 0 && selectedMediaIndex <= finishedList.size()) {
+                String selectedMedia = finishedList.get(selectedMediaIndex - 1); // Get selected media
+
+                // Play media directly from the finished list
+                handleMediaSelection(selectedMedia, "Selected from Finished List", "Finished List");
+            } else {
+                TextUI.messagePrint("Invalid choice. Please try again.");
+            }
+        } catch (NumberFormatException e) {
+            TextUI.messagePrint("Invalid input. Please enter a number.");
+        }
+    }
 
 
     public void addToWatchList(String title) {
@@ -107,6 +160,7 @@ public class MediaList {
 
     private void loadFinishedList() {
         finishedList = FileIO.readUserInfo(finishedListPath);
+        finishedList.removeIf(media -> media == null || media.trim().isEmpty());
     }
 
     public void saveWatchList() {
@@ -114,6 +168,7 @@ public class MediaList {
     }
 
     public void saveFinishedList() {
+        finishedList.removeIf(String::isEmpty);
         FileIO.writeUserInfo(finishedListPath, String.join("\n", finishedList));
     }
 
@@ -122,20 +177,13 @@ public class MediaList {
         saveFinishedList();
     }
 
-    public void displayWatchList() {
-        TextUI.messagePrint("Your watchList:");
-        for (int i = 0; i<watchList.size();i++) {
-            TextUI.messagePrint((i + 1) + ": " + watchList.get(i));
-        }
+    public ArrayList<String> getWatchList(){
+        return watchList;
+    }
+    public ArrayList<String> getFinishedList(){
+        return finishedList;
     }
 
-
-    public void displayFinishedList() {
-        TextUI.messagePrint("Your finished list:");
-        for (String media : finishedList) {
-            TextUI.messagePrint(media);
-        }
-    }
 
     public void displayMediaList(String type) {
         ArrayList<String> mediaList = new ArrayList<>();
@@ -158,7 +206,7 @@ public class MediaList {
             for (int i = 0; i < mediaList.size(); i++) {
                 TextUI.messagePrint((i + 1) + ". " + mediaList.get(i)); //Laver liste af media fra 1 til n-1
             }
-            String choice = TextUI.messagePrompt("Enter number of desired media or click '0' to go back.");
+            String choice = TextUI.messagePrompt("Enter number of desired media or click '0' to go back to main menu.");
 
             try {
                 int intChoice = Integer.parseInt(choice);
@@ -194,8 +242,7 @@ public class MediaList {
             System.out.println(selectedMediaInfo);
             TextUI.messagePrint("1. Start watching \"" + selectedMedia + "\".");
             TextUI.messagePrint("2. Add \"" + selectedMedia + "\"" + " to your watchlist.");
-            TextUI.messagePrint("3. Go back to the " + type + " list.");
-            TextUI.messagePrint("4. Go back to the main menu.");
+            TextUI.messagePrint("3. Go back");
 
             String choice = TextUI.messagePrompt("Enter your choice:");
 
@@ -203,16 +250,13 @@ public class MediaList {
                 case "1":
                     TextUI.messagePrint("Starting \"" + selectedMedia + "\"...");
                     addToFinishedList(selectedMedia);
-                    System.exit(0); // filler code
+                    playMedia(selectedMedia, type);
                     break;
                 case "2":
                     addToWatchList(selectedMedia);
                     TextUI.messagePrint("Added \"" + selectedMedia + "\"" + " to your watchlist.");
                     break;
                 case "3":
-                    displayMediaList(type);
-                    break;
-                case "4":
                     inMediaMenu = false;
                     break;
                 default:
@@ -221,6 +265,39 @@ public class MediaList {
         }
 
     }
+    private void playMedia(String selectedMedia, String type) {
+        boolean watching = true;
+        boolean isPaused = false;
+        TextUI.messagePrint("Now playing \"" + selectedMedia + "\"...");
+
+        while (watching) {
+            TextUI.messagePrint("""
+                    1. Pause/resume.
+                    2. Quit watching.
+                    """);
+            String watchChoice = TextUI.messagePrompt("Enter your choice:");
+            switch (watchChoice) {
+                case "1":
+                    if (!isPaused) {
+                        TextUI.messagePrint("Paused \"" + selectedMedia + "\".");
+                        isPaused = true;
+                        break;
+                    } else {
+                        TextUI.messagePrint("Resumed \"" + selectedMedia + "\".");
+                        isPaused = false;
+                        break;
+                    }
+                case "2":
+                    TextUI.messagePrint("Stopped watching \"" + selectedMedia + "\".");
+                    watching = false;
+                    break;
+                default:
+                    TextUI.messagePrint("Invalid choice. Please select 1 or 2.");
+                    break;
+            }
+        }
+    }
+
 
     public ArrayList<String> getSeriesInfoList() {
         return seriesInfoList;
